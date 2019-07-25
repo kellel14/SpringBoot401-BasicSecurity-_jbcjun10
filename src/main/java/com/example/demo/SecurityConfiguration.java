@@ -68,7 +68,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //configures users who can access the application/how users are granted access
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
-        throws Exception{
+        throws Exception {
 
         auth.userDetailsService(userDetailsServiceBean())
                 .passwordEncoder(passwordEncoder());
@@ -80,7 +80,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .and()
 //                .withUser("user").password(passwordEncoder().encode("password"))
 //                .authorities("USER");
+//    }
     }
-
 
 }

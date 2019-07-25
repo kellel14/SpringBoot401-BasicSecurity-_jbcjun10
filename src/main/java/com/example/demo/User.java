@@ -2,7 +2,16 @@ package com.example.demo;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.Collection;
 
 @Entity
@@ -37,16 +46,19 @@ public class User {
 
     public User(){
 
-    }
+        }
 
-    public User(String email, String password, String firstName, String lastName, boolean enabled, String username, Collection<Role> roles) {
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.enabled = enabled;
-        this.username = username;
-        this.roles = roles;
+
+    public User(String email, String password,
+                String firstName, String lastName,
+                boolean enabled, String username) {
+        this.setEmail(email);
+        this.setPassword(password);
+        this.setFirstName(firstName);
+        this.setLastName(lastName);
+        this.setEnabled(enabled);
+        this.setUsername(username);
+//        this.roles = roles;
     }
 
     public long getId() {
@@ -71,7 +83,7 @@ public class User {
 
     public void setPassword(String password) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        this.password = password;
+        this.password = passwordEncoder.encode(password);
     }
 
     public String getFirstName() {
@@ -113,4 +125,5 @@ public class User {
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
+
 }

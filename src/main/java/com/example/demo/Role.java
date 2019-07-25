@@ -23,6 +23,10 @@ public class Role {
         this.role = role;
     }
 
+    public Role(Collection<User> users) {
+        this.users = users;
+    }
+
     public long getId() {
         return id;
     }
@@ -46,4 +50,5 @@ public class Role {
     public void setUsers(Collection<User> users) {
         this.users = users;
     }
+
 }
