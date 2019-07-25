@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,13 +25,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Autowired
+    private SSUserDetailsService userDetailsService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Override
+    public UserDetailsService userDetailsServiceBean() throws
+            Exception{
+        return new SSUserDetailsService(userRepository);
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //restricts access to routes
         http
 
                 .authorizeRequests() //tells application which requests should be authorized
-                .antMatchers("/")
+                .antMatchers("/", "/h2-console/**").permitAll()
+                .antMatchers("/admin")
                 .access("hasAnyAuthority('USER','ADMIN')")
                 .antMatchers("/admin").access("hasAuthority('ADMIN')")
                 .anyRequest().authenticated()
@@ -41,7 +55,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login")
-                .permitAll();
+                .permitAll()
+                .permitAll()
+                .and()
+                .httpBasic();
+        http
+                .csrf().disable();
+        http
+                .headers().frameOptions().disable();
     }
 //configures users who can access the application/how users are granted access
     @Override
