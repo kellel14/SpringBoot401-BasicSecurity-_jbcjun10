@@ -16,22 +16,28 @@ public class HomeController {
 
     @Autowired
     UserService userService;
+// option to use Get + Most method or RequestMapping
+//    @RequestMapping(value = "/register", method = RequestMethod.GET)
+//    public String showRegistrationPage(@Valid @ModelAttribute("user") User user, BindingResult result,
+//                                       Model model) {
+//        model.addAttribute("user", user);
+//        if(result.hasErrors()){
+//            return "registration";
+//        }
+//        else{
+//            userService.saveUser(user);
+//            model.addAttribute("message", "User Account Created");
+//        }
+//        return "index";
+//    }
 
-    @GetMapping(value = "/register", method = RequestMethod.GET)
-    public String showRegistrationPage(@Valid @ModelAttribute("user") User user, BindingResult result,
-                                       Model model) {
-        model.addAttribute("user", user);
-        if(result.hasErrors()){
-            return "registration";
-        }
-        else{
-            userService.saveUser(user);
-            model.addAttribute("message", "User Account Created");
-        }
-        return "index";
+    @GetMapping("/register")
+    public String showRegistrationPage(Model model){
+        model.addAttribute("user", new User());
+        return "registration";
     }
 
-    @PostMapping(value = "/register", method = RequestMethod.POST)
+    @PostMapping("/register")
     public String processRegistrationPage(@Valid @ModelAttribute("user") User user,
                                           BindingResult result, Model model){
         model.addAttribute("user", user);
